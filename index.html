@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>EnDigital</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<style>
+		h3 {
+			font-size: 24px;
+		}
+		#btnResult, #btnGenerate {
+		    background-color: #4CAF50;
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+		    width: 30ex;
+		}
+		#btnResult:not(:last-child), #btnGenerate:not(:last-child) {
+		    border-right: none; /* Prevent double borders */
+		}
+		#btnResult:hover, #btnGenerate:hover {
+		    background-color: #3e8e41;
+		}
+		#teResult {
+			width: 24ex;
+		    padding: 8px 16px;
+		    margin: 8px 0;
+		    display: inline-block;
+		    border: 1px solid #ccc;
+		    border-radius: 4px;
+		    box-sizing: border-box;
+		    font-size: 16px;
+		}
+		#lExercise {
+			display: inline-block;
+		}
+
+		body {
+			text-align: center;
+			font-family: 'Open Sans', sans-serif;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		var lastResult = 0;
+		var lastResultStr = "";
+
+		// creating and filling answers
+		var answers = new Map();
+		answers.set(0, "zero");
+		answers.set(1, "one");
+		answers.set(2, "two");
+		answers.set(3, "three");
+		answers.set(4, "four");
+		answers.set(5, "five");
+		answers.set(6, "six");
+		answers.set(7, "seven");
+		answers.set(8, "eight");
+		answers.set(9, "nine");
+		answers.set(10, "ten");
+		answers.set(11, "eleven");
+		answers.set(12, "twelve");
+		answers.set(13, "thirteen");
+		answers.set(14, "fourteen");
+		answers.set(15, "fifteen");
+		answers.set(16, "sixteen");
+		answers.set(17, "seventeen");
+		answers.set(18, "eighteen");
+		answers.set(19, "nineteen");
+		answers.set(20, "twenty");
+
+		var operations = new Map();
+		operations.set(0, "+");
+		operations.set(1, "-");
+		operations.set(2, "*");
+		operations.set(3, "/");
+
+		function generateExercise(){
+			let x = 0, y = 0, oper = 0, result = 0;
+			do {
+				x = Math.floor((Math.random() * 10) + 1);
+				y = Math.floor((Math.random() * 10) + 1);
+				oper = Math.floor((Math.random() * 4));
+				result = 0;
+				switch(oper){
+					case 0:
+						result = x + y;
+						break;
+					case 1:
+						result = x - y;
+						break;
+					case 2:
+						result = x * y;
+						break;
+					case 3:
+						result = x / y;
+						break;
+				}
+				console.log("x = "+x);
+				console.log("oper = "+oper+"; operStr: "+operations.get(oper));
+				console.log("y = "+y);
+				console.log("result = "+result);
+			} while ((result < 0 || result > 20) || result == lastResult || (oper == 3 && (x % y != 0)));
+			lastResult = result;
+			lastResultStr = answers.get(result);
+			return x+" "+operations.get(oper)+" "+y+" = ";
+		}
+
+		function generate(){
+			let exercise = generateExercise();
+			document.getElementById("lExercise").innerText = exercise;
+			document.getElementById("teResult").value = "";
+		}
+
+		function check(){
+			let resultStr = document.getElementById("teResult").value;
+			console.log("resultStr: " + resultStr + "; last: " + lastResultStr);
+			if (resultStr == lastResultStr){
+				alert("Correct!");
+				generate();
+			} else {
+				alert("Error! Correct answer: " + lastResultStr);
+			}
+		}
+	</script>
+	<h3>EnDigital</h3>
+	<button id="btnGenerate" onclick="generate()">Generate</button>
+	<div id="exerciseBlock">
+		<p id="lExercise"></p>
+		<input type="text" name="teResult" id="teResult" onsubmit="check()" style="max-height: 26px; vertical-align: middle;">		
+	</div>
+	<button id="btnResult" onclick="check()">Check</button>
+	<script type="text/javascript">
+		generate();
+	</script>
+</body>
+</html>
